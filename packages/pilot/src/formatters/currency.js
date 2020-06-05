@@ -1,18 +1,14 @@
 import { isNil } from 'ramda'
-import Intl from 'intl'
-import 'intl/locale-data/jsonp/pt'
+import currencyToParts from './currencyToParts'
 
 const currency = (value) => {
-  if (isNil(value)) {
+  const parts = currencyToParts(value)
+
+  if (isNil(parts)) {
     return null
   }
 
-  const formatter = new Intl.NumberFormat('pt-BR', {
-    currency: 'BRL',
-    style: 'currency',
-  })
-
-  return formatter.format(Number(value) / 100)
+  return `${parts.symbol} ${parts.value}`
 }
 
 export default currency
