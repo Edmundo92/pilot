@@ -6,7 +6,7 @@ import {
   ModalTitle,
 } from 'former-kit'
 import IconClose from 'emblematic-icons/svg/ClearClose32.svg'
-import FirstStep from './FirstStep'
+import FirstStep from './FirstStep/FirstStep'
 
 const buildRenderTitle = onClose => title => (
   <ModalTitle
@@ -57,7 +57,7 @@ const PaymentLinkAdd = ({ isOpen, onClose, t }) => {
           <FirstStep
             formData={formData}
             onChange={handleFormChange}
-            onSubmit={() => setStep('second_step')}
+            onSubmit={() => setStep(steps.SECOND_STEP)}
             t={t}
             renderTitle={renderTitle}
             renderBulletSteps={renderBulletSteps}

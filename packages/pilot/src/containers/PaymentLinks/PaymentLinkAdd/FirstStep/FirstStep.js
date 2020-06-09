@@ -8,44 +8,10 @@ import {
 } from 'former-kit'
 import Form from 'react-vanilla-form'
 import moment from 'moment'
-
-import createRequiredValidation from '../../../validation/required'
-import createNumberValidation from '../../../validation/number'
-import createMinLengthValidation from '../../../validation/minLength'
-import createLessThanValidation from '../../../validation/lessThan'
-
-import PaymentLinkActionsContainer from './PaymentLinkActionsContainer'
-import CurrencyInput from '../../../components/CurrencyInput'
+import PaymentLinkActionsContainer from '../PaymentLinkActionsContainer'
+import CurrencyInput from '../../../../components/CurrencyInput'
+import { validateAmount, validateExpirationAmount, validateName } from './validators'
 import style from './style.css'
-
-const getDateDurationInMinutes = (timeAmount, timeUnit) => {
-  const date = moment().add(timeAmount, timeUnit)
-  const duration = moment.duration(date.diff(moment()))
-  return duration.asMinutes()
-}
-
-const createMinAllowedHours = (timeUnit, getTranslation) => (
-  timeAmount
-) => {
-  const durationInMinutes = getDateDurationInMinutes(timeAmount, timeUnit)
-
-  const minAllowedHours = 1
-  const minAllowedMinutes = minAllowedHours * 60
-  return durationInMinutes < minAllowedMinutes && getTranslation('min_allowed_hours_error', { hours: minAllowedHours })
-}
-
-const createMaxAllowedDays = (timeUnit, getTranslation) => (timeAmount) => {
-  const durationInMinutes = getDateDurationInMinutes(timeAmount, timeUnit)
-
-  const maxAllowedDays = 186
-  const maxAllowedMinutes = maxAllowedDays * 24 * 60
-  return durationInMinutes > maxAllowedMinutes && getTranslation('max_allowed_days_error', { days: maxAllowedDays })
-}
-
-const createIsNotIntegerValidation = message => (value) => {
-  const isInteger = Number.isInteger(value)
-  return !isInteger && message
-}
 
 const makeExpirationDateStr = (expirationAmount, expirationUnit, t) => {
   const date = moment().add(expirationAmount, expirationUnit)
@@ -74,34 +40,6 @@ const FirstStep = ({
 }) => {
   const getTranslation = (subpath, args = {}) => t(`pages.payment_links.add_link.first_step.${subpath}`, args)
 
-  const isRequired = createRequiredValidation(getTranslation('required_error'))
-  const isNumber = createNumberValidation(getTranslation('is_number_error'))
-  const isInteger = createIsNotIntegerValidation(
-    getTranslation('is_not_integer_error')
-  )
-
-  const minCharLength = 2
-  const minCharLengthError = createMinLengthValidation(
-    minCharLength,
-    getTranslation('min_chars_length_error', { length: minCharLength })
-  )
-
-  const minimumRequiredPrice = 100
-  const priceGreaterThanMinimum = createLessThanValidation(
-    minimumRequiredPrice,
-    getTranslation('price_greater_than_100_error', { minAmount: minimumRequiredPrice })
-  )
-
-  const minAllowedHours = createMinAllowedHours(
-    formData.expiration_unit,
-    getTranslation
-  )
-
-  const maxAllowedDays = createMaxAllowedDays(
-    formData.expiration_unit,
-    getTranslation
-  )
-
   return (
     <>
       {renderTitle(getTranslation('title'))}
@@ -111,19 +49,16 @@ const FirstStep = ({
         onSubmit={(_, errors) => !errors && onSubmit()}
         validateOn="blur"
         validation={{
-          amount: [isNumber, priceGreaterThanMinimum],
-          expiration_amount: [
-            isRequired,
-            isInteger,
-            minAllowedHours,
-            maxAllowedDays,
-          ],
-          link_name: [isRequired, minCharLengthError],
+          amount: validateAmount(getTranslation),
+          expiration_amount: validateExpirationAmount(
+            formData.expiration_unit, getTranslation
+          ),
+          name: validateName(getTranslation),
         }}
       >
         <ModalContent>
           <div className={style.paymentLinkForm}>
-            <FormInput label="Nome do link" name="link_name" type="text" />
+            <FormInput label="Nome do link" name="name" type="text" />
             <FormInput
               label={getTranslation('price_form_label')}
               name="amount"
@@ -170,7 +105,7 @@ const FirstStep = ({
 
 FirstStep.propTypes = {
   formData: PropTypes.shape().isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   onSubmit: PropTypes.func,
   renderBulletSteps: PropTypes.func.isRequired,
   renderTitle: PropTypes.func.isRequired,
@@ -178,6 +113,7 @@ FirstStep.propTypes = {
 }
 
 FirstStep.defaultProps = {
+  onChange: () => {},
   onSubmit: () => {},
 }
 

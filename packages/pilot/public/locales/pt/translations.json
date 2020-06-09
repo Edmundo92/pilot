@@ -1665,6 +1665,7 @@
           "time_expiration_form_label": "Tempo de expiração",
           "expiration_date_string": "Este link ficará disponível até {{formatedDate}} às {{formatedHours}}.",
           "min_chars_length_error": "Este campo precisa ter no mínimo {{length}} caracteres.",
+          "max_chars_length_error": "No máximo {{length}} caracteres",
           "required_error": "Campo obrigatório",
           "price_greater_than_100_error": "O preço do seu link deve ser maior ou igual a {{minAmount}}",
           "is_number_error": "Este campo precisa ser um número",

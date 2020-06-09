@@ -1,0 +1,21 @@
+@import "former-kit-skin-pagarme/dist/styles/colors.css";
+
+.paymentLinkForm > div:not(:last-of-type) {
+  padding-bottom: 40px;
+}
+
+.paymentLinkForm .expirationDate {
+  align-items: center;
+  display: flex;
+  margin-bottom: 10px;
+
+  & > div:last-of-type {
+    margin-left: 10px;
+    width: 150px;
+  }
+}
+
+.paymentLinkForm .expirationMessage {
+  color: var(--color-squanchy-gray-300);
+  font-size: 13px;
+}
