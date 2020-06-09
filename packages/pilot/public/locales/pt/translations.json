@@ -1699,6 +1699,12 @@
           "title": "Link criado com sucesso!",
           "subtitle": "Compartilhe o link abaixo e boas vendas.",
           "new_link": "Criar novo link de pagamento"
+        },
+        "error": {
+          "title": "Erro na criação do link",
+          "retry_button": "Tentar novamente",
+          "error_info_1": "Ops! Tivemos um problema na criação",
+          "error_info_2": "do seu link, tente novamente mais tarde."
         }
       }
     },
