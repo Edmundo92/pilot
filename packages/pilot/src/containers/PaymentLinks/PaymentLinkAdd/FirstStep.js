@@ -1,24 +1,20 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
-  BulletSteps,
   Button,
-  Flexbox,
   FormInput,
-  ModalTitle,
   ModalContent,
-  ModalActions,
   Dropdown,
 } from 'former-kit'
 import Form from 'react-vanilla-form'
 import moment from 'moment'
 
-import IconClose from 'emblematic-icons/svg/ClearClose32.svg'
 import createRequiredValidation from '../../../validation/required'
 import createNumberValidation from '../../../validation/number'
 import createMinLengthValidation from '../../../validation/minLength'
 import createLessThanValidation from '../../../validation/lessThan'
 
+import PaymentLinkActionsContainer from './PaymentLinkActionsContainer'
 import CurrencyInput from '../../../components/CurrencyInput'
 import style from './style.css'
 
@@ -68,12 +64,14 @@ const makeExpirationUnitItem = t => unit => ({
   value: unit,
 })
 
-const FirstStep = ({ onClose, onSubmit, t }) => {
-  const [formData, setFormData] = useState({
-    amount: '0',
-    expiration_unit: 'days',
-  })
-
+const FirstStep = ({
+  formData,
+  onChange,
+  onSubmit,
+  renderBulletSteps,
+  renderTitle,
+  t,
+}) => {
   const getTranslation = (subpath, args = {}) => t(`pages.payment_links.add_link.first_step.${subpath}`, args)
 
   const isRequired = createRequiredValidation(getTranslation('required_error'))
@@ -106,17 +104,12 @@ const FirstStep = ({ onClose, onSubmit, t }) => {
 
   return (
     <>
-      <ModalTitle
-        title={getTranslation('title')}
-        titleAlign="start"
-        closeIcon={<IconClose width={12} height={12} />}
-        onClose={onClose}
-      />
+      {renderTitle(getTranslation('title'))}
       <Form
         data={formData}
-        onChange={setFormData}
-        onSubmit={onSubmit}
-        validateOn="onBlur"
+        onChange={onChange}
+        onSubmit={(_, errors) => !errors && onSubmit()}
+        validateOn="blur"
         validation={{
           amount: [isNumber, priceGreaterThanMinimum],
           expiration_amount: [
@@ -164,33 +157,27 @@ const FirstStep = ({ onClose, onSubmit, t }) => {
             )}
           </div>
         </ModalContent>
-        <ModalActions>
-          <Flexbox className={style.paymentLinkActions} justifyContent="center">
-            <Button fill="flat" type="submit">
-              {t('advance')}
-            </Button>
-            <BulletSteps
-              status={[
-                { id: 'firstStep', status: 'current' },
-                { id: 'secondStep', status: 'next' },
-              ]}
-              steps={[{ id: 'firstStep' }, { id: 'secondStep' }]}
-            />
-          </Flexbox>
-        </ModalActions>
+        <PaymentLinkActionsContainer>
+          <Button fill="flat" type="submit">
+            {t('advance')}
+          </Button>
+          {renderBulletSteps()}
+        </PaymentLinkActionsContainer>
       </Form>
     </>
   )
 }
 
 FirstStep.propTypes = {
-  onClose: PropTypes.func,
+  formData: PropTypes.shape().isRequired,
+  onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func,
+  renderBulletSteps: PropTypes.func.isRequired,
+  renderTitle: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 }
 
 FirstStep.defaultProps = {
-  onClose: () => {},
   onSubmit: () => {},
 }
 

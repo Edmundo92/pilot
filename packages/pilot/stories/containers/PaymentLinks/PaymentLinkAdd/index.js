@@ -4,6 +4,7 @@ import { Modal } from 'former-kit'
 import PaymentLinkResult from '../../../../src/containers/PaymentLinks/PaymentLinkAdd/Result'
 import PaymentLinkFirstStep from '../../../../src/containers/PaymentLinks/PaymentLinkAdd/FirstStep'
 import PaymentLinkSecondStep from '../../../../src/containers/PaymentLinks/PaymentLinkAdd/SecondStep'
+import PaymentLinkAdd from '../../../../src/containers/PaymentLinks/PaymentLinkAdd'
 
 import translations from '../../../../public/locales/pt/translations.json'
 
@@ -27,7 +28,12 @@ const PaymentLinkResultExample = () => (
   </Modal>
 )
 
+const PaymentLinkAddExample = () => (
+  <PaymentLinkAdd isOpen t={t} />
+)
+
 export default {
+  PaymentLinkAddModal: PaymentLinkAddExample,
   PaymentLinkFirstStep: PaymentLinkFirstStepExample,
   PaymentLinkResult: PaymentLinkResultExample,
   PaymentLinkSecondStep: PaymentLinkSecondStepExample,
