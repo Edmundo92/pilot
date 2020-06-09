@@ -44,3 +44,13 @@
   color: var(--color-birdperson-gray-500);
   white-space: nowrap;
 }
+
+.emptyState {
+  display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.centerText {
+  text-align: center;
+}

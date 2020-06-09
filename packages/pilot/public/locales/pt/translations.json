@@ -1676,12 +1676,15 @@
         }
       },
       "details": {
-        "link_statement": "Extrato do link",
-        "paid_amount": "Valor pago",
-        "refunds": "Estornos",
-        "chargebacks": "Chargebacks",
-        "fees": "Taxas Pagar.me",
-        "net_amount": "Você recebe"
+        "link_statement": {
+          "title": "Extrato do link",
+          "paid_amount": "Valor pago",
+          "refunds": "Estornos",
+          "chargebacks": "Chargebacks",
+          "fees": "Taxas Pagar.me",
+          "net_amount": "Você recebe",
+          "empty_state": "Vamos adicionar aqui o extrato das suas transações neste link de pagamento, basta ter uma transação paga para visualizar aqui o quanto você receberá no seu saldo."
+        }
       }
     },
     "empty_state": {
