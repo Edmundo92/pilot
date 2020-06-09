@@ -20,7 +20,7 @@ const renderBoletoInput = (formData, t) => (
     <FormInput
       disabled={!formData.boleto}
       label={t('pages.payment_links.add_link.second_step.boleto_input_label')}
-      name="expiration_boleto"
+      name="boleto_expires_in"
       type="text"
     />
   </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { path, split } from 'ramda'
 import { BulletSteps, Modal, ModalTitle } from 'former-kit'
 import PaymentLinkResult from '../../../../src/containers/PaymentLinks/PaymentLinkAdd/Result'
@@ -27,6 +27,40 @@ const renderBulletSteps = () => (
   />
 )
 
+const PaymentLinkAddExample = () => {
+  const [step, setStep] = useState('first_step')
+  const [loading, setLoading] = useState(false)
+
+  const onCreateLink = () => {
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      setStep('success_step')
+    }, 2000)
+  }
+
+  const onNextStep = () => {
+    if (step === 'first_step') {
+      return setStep('second_step')
+    }
+
+    return onCreateLink()
+  }
+
+  const onPreviousStep = () => setStep('first_step')
+
+  return (
+    <PaymentLinkAdd
+      loading={loading}
+      isOpen
+      onNextStep={onNextStep}
+      onPreviousStep={onPreviousStep}
+      step={step}
+      t={t}
+    />
+  )
+}
+
 const PaymentLinkFirstStepExample = () => (
   <Modal size="small" isOpen>
     <PaymentLinkFirstStep
@@ -43,7 +77,12 @@ const PaymentLinkFirstStepExample = () => (
 
 const PaymentLinkSecondStepExample = () => (
   <Modal size="small" isOpen>
-    <PaymentLinkSecondStep t={t} />
+    <PaymentLinkSecondStep
+      formData={{}}
+      renderTitle={renderTitle}
+      renderBulletSteps={renderBulletSteps}
+      t={t}
+    />
   </Modal>
 )
 
@@ -51,10 +90,6 @@ const PaymentLinkResultExample = () => (
   <Modal size="small" isOpen>
     <PaymentLinkResult t={t} paymentLink="link.pagar.me/tBy6bncOoN" />
   </Modal>
-)
-
-const PaymentLinkAddExample = () => (
-  <PaymentLinkAdd isOpen t={t} />
 )
 
 export default {

@@ -19,7 +19,7 @@ const buildInstallmentsValues = (t) => {
 
     return {
       name: t(`pages.payment_links.add_link.second_step.${translationPath}`, { installment: value }),
-      value,
+      value: String(value),
     }
   })
 }
@@ -29,7 +29,7 @@ const buildInterestFeesOptions = (
 ) => {
   const interestFreeOption = {
     name: t('pages.payment_links.add_link.second_step.without_fee_options'),
-    value: 0,
+    value: '0',
   }
 
   if (installments <= 1) {
@@ -44,7 +44,7 @@ const buildInterestFeesOptions = (
 
     return {
       name: t(`pages.payment_links.add_link.second_step.${translationPath}`, { installment: value }),
-      value,
+      value: String(value),
     }
   })
 
@@ -73,13 +73,13 @@ const renderCreditCardInput = (formData, t) => (
       />
       <Dropdown
         disabled={!formData.credit_card}
-        name="transfer_fees"
+        name="free_installments"
         placeholder={t('pages.payment_links.add_link.second_step.transfer_fees_label')}
         options={buildInterestFeesOptions(formData.max_installments, t)}
       />
       {formData.transfer_fees > 0 && formData.credit_card && (
         <InterestFees
-          name="fees_percentage"
+          name="interest_rate"
           t={t}
         />
       )}

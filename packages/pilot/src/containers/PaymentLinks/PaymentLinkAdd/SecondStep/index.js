@@ -1,132 +1,92 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import {
-  BulletSteps,
   Button,
-  Flexbox,
-  ModalActions,
   ModalContent,
-  ModalTitle,
 } from 'former-kit'
 import Form from 'react-vanilla-form'
-import IconClose from 'emblematic-icons/svg/ClearClose32.svg'
 import renderBoletoInput from './BoletoInput'
 import renderCreditCardInput from './CreditCardInput'
+import PaymentLinkActionsContainer from '../PaymentLinkActionsContainer'
 import {
-  validateBoletoExpiration,
-  validateFeesPercentage,
+  validateBoletoExpiresIn,
+  validateInterestRate,
   validateRequiredField,
 } from './validators'
 import styles from './style.css'
 
-const boletoInputDefaultValues = {
-  expiration_boleto: undefined,
-}
-
-const creditCardInputDefaultValues = {
-  fees_percentage: '0',
-  max_installments: undefined,
-  transfer_fees: undefined,
-}
-
 const SecondStep = ({
-  onBack, onClose, onSubmit, t,
+  formData,
+  loading,
+  onBack,
+  onChange,
+  onSubmit,
+  renderBulletSteps,
+  renderTitle,
+  t,
 }) => {
-  const [formData, setFormData] = useState({
-    boleto: false,
-    credit_card: false,
-    ...boletoInputDefaultValues,
-    ...creditCardInputDefaultValues,
-  })
   const [isPaymentMethodEnabled, setIsPaymentMethodEnabled] = useState(false)
 
-  const onFormChange = (newData) => {
-    let newFormData = { ...newData }
-
-    if (newFormData.max_installments !== formData.max_installments) {
-      newFormData = Object.assign(
-        newFormData,
-        creditCardInputDefaultValues,
-        { max_installments: newFormData.max_installments }
-      )
-    }
-
-    if (!newFormData.boleto) {
-      newFormData = Object.assign(
-        newFormData,
-        boletoInputDefaultValues
-      )
-    }
-
-    if (!newFormData.credit_card) {
-      newFormData = Object.assign(
-        newFormData,
-        creditCardInputDefaultValues
-      )
-    }
-
-    setIsPaymentMethodEnabled(newFormData.boleto || newFormData.credit_card)
-    setFormData(newFormData)
+  const internalOnChange = (newData) => {
+    setIsPaymentMethodEnabled(newData.boleto || newData.credit_card)
+    onChange(newData)
   }
 
   return (
     <>
-      <ModalTitle
-        title={t('pages.payment_links.add_link.second_step.title')}
-        titleAlign="start"
-        closeIcon={<IconClose width={12} height={12} />}
-        onClose={onClose}
-      />
+      {renderTitle(t('pages.payment_links.add_link.second_step.title'))}
       <Form
         data={formData}
-        onChange={onFormChange}
-        onSubmit={onSubmit}
-        validateOn="onBlur"
+        onChange={internalOnChange}
+        onSubmit={(_, errors) => !errors && onSubmit()}
+        validateOn="blur"
         validation={{
-          expiration_boleto: validateBoletoExpiration(formData.boleto, t),
-          fees_percentage: validateRequiredField(formData.credit_card, t),
+          boleto_expires_in: validateBoletoExpiresIn(formData.boleto, t),
+          free_installments: validateRequiredField(formData.credit_card, t),
+          interest_rate: validateInterestRate(formData.credit_card, t),
           max_installments: validateRequiredField(formData.credit_card, t),
-          transfer_fees: validateFeesPercentage(formData.credit_card, t),
         }}
       >
         <ModalContent>
           {renderBoletoInput(formData, t)}
           {renderCreditCardInput(formData, t)}
         </ModalContent>
-        <ModalActions>
-          <Flexbox className={styles.paymentLinkActions} justifyContent="center">
-            <div className={styles.secondStepActions}>
-              <Button fill="outline" onClick={onBack}>
-                {t('go_back')}
-              </Button>
-              <Button disabled={!isPaymentMethodEnabled} fill="flat" type="submit">
-                {t('finish')}
-              </Button>
-            </div>
-            <BulletSteps
-              status={[
-                { id: 'firstStep', status: 'previous' },
-                { id: 'secondStep', status: 'current' },
-              ]}
-              steps={[{ id: 'firstStep' }, { id: 'secondStep' }]}
-            />
-          </Flexbox>
-        </ModalActions>
+        <PaymentLinkActionsContainer>
+          <div className={styles.secondStepActions}>
+            <Button disabled={loading} fill="outline" onClick={onBack}>
+              {t('go_back')}
+            </Button>
+            <Button
+              disabled={!isPaymentMethodEnabled || loading}
+              loading={loading}
+              fill="flat"
+              type="submit"
+            >
+              {t('finish')}
+            </Button>
+          </div>
+          {renderBulletSteps('second_step')}
+        </PaymentLinkActionsContainer>
       </Form>
     </>
   )
 }
 
 SecondStep.propTypes = {
+  formData: PropTypes.shape().isRequired,
+  loading: PropTypes.bool,
   onBack: PropTypes.func,
-  onClose: PropTypes.func,
+  onChange: PropTypes.func,
   onSubmit: PropTypes.func,
+  renderBulletSteps: PropTypes.func.isRequired,
+  renderTitle: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 }
 
 SecondStep.defaultProps = {
+  loading: false,
   onBack: () => {},
-  onClose: () => {},
+  onChange: () => {},
   onSubmit: () => {},
 }
 

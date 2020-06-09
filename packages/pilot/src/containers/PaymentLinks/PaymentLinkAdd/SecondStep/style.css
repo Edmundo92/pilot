@@ -25,12 +25,6 @@
   padding-top: 35px;
 }
 
-.paymentLinkActions button {
-  margin-top: 10px;
-  margin-bottom: var(--spacing-small);
-  width: 100%;
-}
-
 .creditCardOptions > div {
   margin-top: 20px;
 }

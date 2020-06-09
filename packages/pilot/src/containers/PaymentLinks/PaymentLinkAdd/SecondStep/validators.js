@@ -12,7 +12,7 @@ const isInteger = t => createNumberValidation(t('pages.payment_links.add_link.se
 
 const isNumber = message => value => Number.isNaN(Number(value)) && message
 
-export const validateBoletoExpiration = (boletoEnabled, t) => (value) => {
+export const validateBoletoExpiresIn = (boletoEnabled, t) => (value) => {
   if (!boletoEnabled) {
     return false
   }
@@ -42,7 +42,7 @@ export const validateRequiredField = (isEnabled, t) => (value) => {
   return isRequired(t)(value)
 }
 
-export const validateFeesPercentage = (creditCardEnabled, t) => (value) => {
+export const validateInterestRate = (creditCardEnabled, t) => (value) => {
   if (!creditCardEnabled) {
     return false
   }

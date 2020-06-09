@@ -7,6 +7,7 @@ import {
 } from 'former-kit'
 import IconClose from 'emblematic-icons/svg/ClearClose32.svg'
 import FirstStep from './FirstStep/FirstStep'
+import SecondStep from './SecondStep'
 
 const buildRenderTitle = onClose => title => (
   <ModalTitle
@@ -17,20 +18,23 @@ const buildRenderTitle = onClose => title => (
   />
 )
 
-const renderBulletSteps = () => (
-  <BulletSteps
-    status={[
+const renderBulletSteps = (currentStep) => {
+  const status = currentStep === 'first_step'
+    ? [
       { id: 'firstStep', status: 'current' },
       { id: 'secondStep', status: 'next' },
-    ]}
-    steps={[{ id: 'firstStep' }, { id: 'secondStep' }]}
-  />
-)
+    ]
+    : [
+      { id: 'firstStep', status: 'previous' },
+      { id: 'secondStep', status: 'current' },
+    ]
 
-const steps = {
-  FIRST_STEP: 'first_step',
-  LAST_STEP: 'last_step',
-  SECOND_STEP: 'second_step',
+  return (
+    <BulletSteps
+      status={status}
+      steps={[{ id: 'firstStep' }, { id: 'secondStep' }]}
+    />
+  )
 }
 
 const firstStepDefaultData = {
@@ -38,14 +42,59 @@ const firstStepDefaultData = {
   expiration_unit: 'days',
 }
 
-const PaymentLinkAdd = ({ isOpen, onClose, t }) => {
-  const [step, setStep] = useState(steps.FIRST_STEP)
+const boletoInputDefaultValues = {
+  boleto_expires_in: undefined,
+}
+
+const creditCardInputDefaultValues = {
+  free_installments: undefined,
+  interest_rate: '0',
+  max_installments: undefined,
+}
+
+const PaymentLinkAdd = ({
+  isOpen,
+  loading,
+  onClose,
+  onNextStep,
+  onPreviousStep,
+  step,
+  t,
+}) => {
   const [formData, setFormData] = useState({
+    boleto: false,
+    credit_card: false,
     ...firstStepDefaultData,
+    ...boletoInputDefaultValues,
+    ...creditCardInputDefaultValues,
   })
 
   const handleFormChange = (newData) => {
-    setFormData(newData)
+    let newFormData = { ...newData }
+
+    if (newFormData.max_installments !== formData.max_installments) {
+      newFormData = Object.assign(
+        newFormData,
+        creditCardInputDefaultValues,
+        { max_installments: newFormData.max_installments }
+      )
+    }
+
+    if (!newFormData.boleto) {
+      newFormData = Object.assign(
+        newFormData,
+        boletoInputDefaultValues
+      )
+    }
+
+    if (!newFormData.credit_card) {
+      newFormData = Object.assign(
+        newFormData,
+        creditCardInputDefaultValues
+      )
+    }
+
+    setFormData(newFormData)
   }
 
   const renderTitle = buildRenderTitle(onClose)
@@ -53,16 +102,30 @@ const PaymentLinkAdd = ({ isOpen, onClose, t }) => {
   return (
     <Modal isOpen={isOpen} size="small">
       {
-          step === steps.FIRST_STEP && (
+          step === 'first_step' && (
           <FirstStep
             formData={formData}
             onChange={handleFormChange}
-            onSubmit={() => setStep(steps.SECOND_STEP)}
+            onSubmit={() => onNextStep()}
             t={t}
             renderTitle={renderTitle}
             renderBulletSteps={renderBulletSteps}
           />
           )
+      }
+      {
+        step === 'second_step' && (
+          <SecondStep
+            formData={formData}
+            loading={loading}
+            onBack={() => onPreviousStep()}
+            onChange={handleFormChange}
+            onSubmit={() => onNextStep()}
+            t={t}
+            renderTitle={renderTitle}
+            renderBulletSteps={renderBulletSteps}
+          />
+        )
       }
     </Modal>
   )
@@ -70,7 +133,16 @@ const PaymentLinkAdd = ({ isOpen, onClose, t }) => {
 
 PaymentLinkAdd.propTypes = {
   isOpen: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
+  onNextStep: PropTypes.func.isRequired,
+  onPreviousStep: PropTypes.func.isRequired,
+  step: PropTypes.oneOf([
+    'first_step',
+    'second_step',
+    'success_step',
+    'error_step',
+  ]).isRequired,
   t: PropTypes.func.isRequired,
 }
 

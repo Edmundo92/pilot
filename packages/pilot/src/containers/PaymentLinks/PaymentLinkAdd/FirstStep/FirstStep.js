@@ -96,7 +96,7 @@ const FirstStep = ({
           <Button fill="flat" type="submit">
             {t('advance')}
           </Button>
-          {renderBulletSteps()}
+          {renderBulletSteps('first_step')}
         </PaymentLinkActionsContainer>
       </Form>
     </>

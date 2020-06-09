@@ -53,12 +53,17 @@ const PaymentMethodToggle = ({
 }
 
 PaymentMethodToggle.propTypes = {
-  Icon: PropTypes.node.isRequired,
+  Icon: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   t: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.bool,
+}
+
+PaymentMethodToggle.defaultProps = {
+  onChange: () => {},
+  value: false,
 }
 
 export default PaymentMethodToggle
