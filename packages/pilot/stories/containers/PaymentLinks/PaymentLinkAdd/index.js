@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { path, split } from 'ramda'
 import { BulletSteps, Modal, ModalTitle } from 'former-kit'
-import PaymentLinkResult from '../../../../src/containers/PaymentLinks/PaymentLinkAdd/Result'
+import PaymentLinkSuccessStep from '../../../../src/containers/PaymentLinks/PaymentLinkAdd/SuccessStep'
 import PaymentLinkFirstStep from '../../../../src/containers/PaymentLinks/PaymentLinkAdd/FirstStep/FirstStep'
 import PaymentLinkSecondStep from '../../../../src/containers/PaymentLinks/PaymentLinkAdd/SecondStep'
 import PaymentLinkAdd from '../../../../src/containers/PaymentLinks/PaymentLinkAdd'
@@ -30,6 +30,7 @@ const renderBulletSteps = () => (
 const PaymentLinkAddExample = () => {
   const [step, setStep] = useState('first_step')
   const [loading, setLoading] = useState(false)
+  const paymentLink = 'link.pagar.me/tBy6bncOoN'
 
   const onCreateLink = () => {
     setLoading(true)
@@ -38,6 +39,8 @@ const PaymentLinkAddExample = () => {
       setStep('success_step')
     }, 2000)
   }
+
+  const onCreateNewLink = () => setStep('first_step')
 
   const onNextStep = () => {
     if (step === 'first_step') {
@@ -55,6 +58,8 @@ const PaymentLinkAddExample = () => {
       isOpen
       onNextStep={onNextStep}
       onPreviousStep={onPreviousStep}
+      onCreateNewLink={onCreateNewLink}
+      paymentLink={paymentLink}
       step={step}
       t={t}
     />
@@ -86,15 +91,19 @@ const PaymentLinkSecondStepExample = () => (
   </Modal>
 )
 
-const PaymentLinkResultExample = () => (
+const PaymentLinkSuccessStepExample = () => (
   <Modal size="small" isOpen>
-    <PaymentLinkResult t={t} paymentLink="link.pagar.me/tBy6bncOoN" />
+    <PaymentLinkSuccessStep
+      t={t}
+      paymentLink="link.pagar.me/tBy6bncOoN"
+      renderTitle={renderTitle}
+    />
   </Modal>
 )
 
 export default {
   PaymentLinkAddModal: PaymentLinkAddExample,
   PaymentLinkFirstStep: PaymentLinkFirstStepExample,
-  PaymentLinkResult: PaymentLinkResultExample,
   PaymentLinkSecondStep: PaymentLinkSecondStepExample,
+  PaymentLinkSuccessStep: PaymentLinkSuccessStepExample,
 }

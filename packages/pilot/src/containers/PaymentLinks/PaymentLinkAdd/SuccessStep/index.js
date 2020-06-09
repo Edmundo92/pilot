@@ -3,26 +3,24 @@ import PropTypes from 'prop-types'
 import {
   Button,
   Flexbox,
-  ModalTitle,
   ModalContent,
-  ModalActions,
 } from 'former-kit'
 import copyToClipBoard from 'clipboard-copy'
 import IconCopy from 'emblematic-icons/svg/Copy24.svg'
-import IconClose from 'emblematic-icons/svg/ClearClose32.svg'
-import ClickableDiv from '../../../components/ClickableDiv'
+import PaymentLinkActionsContainer from '../PaymentLinkActionsContainer'
+import ClickableDiv from '../../../../components/ClickableDiv'
 import CreatedLinkSvg from './created_link.svg'
 
 import style from './style.css'
 
-const Result = ({ onCreateLink, paymentLink, t }) => (
+const SuccessStep = ({
+  onCreateNewLink,
+  paymentLink,
+  renderTitle,
+  t,
+}) => (
   <>
-    <ModalTitle
-      title={t('pages.payment_links.add_link.success.title')}
-      titleAlign="start"
-      closeIcon={<IconClose width={12} height={12} />}
-      onClose={v => v}
-    />
+    {renderTitle(t('pages.payment_links.add_link.success.title'))}
     <ModalContent>
       <div className={style.paymentLinkResult}>
         <span className={style.subtitle}>
@@ -43,20 +41,23 @@ const Result = ({ onCreateLink, paymentLink, t }) => (
         </Flexbox>
       </div>
     </ModalContent>
-    <ModalActions>
-      <Flexbox className={style.paymentLinkActions}>
-        <Button onClick={onCreateLink}>
-          {t('pages.payment_links.add_link.success.new_link')}
-        </Button>
-      </Flexbox>
-    </ModalActions>
+    <PaymentLinkActionsContainer>
+      <Button onClick={onCreateNewLink}>
+        {t('pages.payment_links.add_link.success.new_link')}
+      </Button>
+    </PaymentLinkActionsContainer>
   </>
 )
 
-Result.propTypes = {
-  onCreateLink: PropTypes.func.isRequired,
+SuccessStep.propTypes = {
+  onCreateNewLink: PropTypes.func,
   paymentLink: PropTypes.string.isRequired,
+  renderTitle: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
 }
 
-export default Result
+SuccessStep.defaultProps = {
+  onCreateNewLink: () => {},
+}
+
+export default SuccessStep

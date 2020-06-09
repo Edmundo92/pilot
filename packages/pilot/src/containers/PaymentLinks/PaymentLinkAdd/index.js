@@ -8,6 +8,7 @@ import {
 import IconClose from 'emblematic-icons/svg/ClearClose32.svg'
 import FirstStep from './FirstStep/FirstStep'
 import SecondStep from './SecondStep'
+import SuccessStep from './SuccessStep'
 
 const buildRenderTitle = onClose => title => (
   <ModalTitle
@@ -56,8 +57,10 @@ const PaymentLinkAdd = ({
   isOpen,
   loading,
   onClose,
+  onCreateNewLink,
   onNextStep,
   onPreviousStep,
+  paymentLink,
   step,
   t,
 }) => {
@@ -127,6 +130,16 @@ const PaymentLinkAdd = ({
           />
         )
       }
+      {
+        step === 'success_step' && (
+          <SuccessStep
+            onCreateNewLink={onCreateNewLink}
+            paymentLink={paymentLink}
+            t={t}
+            renderTitle={renderTitle}
+          />
+        )
+      }
     </Modal>
   )
 }
@@ -135,8 +148,10 @@ PaymentLinkAdd.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
+  onCreateNewLink: PropTypes.func,
   onNextStep: PropTypes.func.isRequired,
   onPreviousStep: PropTypes.func.isRequired,
+  paymentLink: PropTypes.string,
   step: PropTypes.oneOf([
     'first_step',
     'second_step',
@@ -148,6 +163,8 @@ PaymentLinkAdd.propTypes = {
 
 PaymentLinkAdd.defaultProps = {
   onClose: () => {},
+  onCreateNewLink: () => {},
+  paymentLink: null,
 }
 
 export default PaymentLinkAdd

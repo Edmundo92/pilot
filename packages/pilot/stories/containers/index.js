@@ -464,7 +464,7 @@ storiesOf('Containers|Payment Links/PaymentLinkAdd', module)
   .add('AddModal', () => <PaymentLinks.PaymentLinkAdd.PaymentLinkAddModal />)
   .add('FirstStep', () => <PaymentLinks.PaymentLinkAdd.PaymentLinkFirstStep />)
   .add('SecondStep', () => <PaymentLinks.PaymentLinkAdd.PaymentLinkSecondStep />)
-  .add('Result', () => <PaymentLinks.PaymentLinkAdd.PaymentLinkResult />)
+  .add('SuccessStep', () => <PaymentLinks.PaymentLinkAdd.PaymentLinkSuccessStep />)
 
 storiesOf('Containers|Empty State', module)
   .add('Default', () => <EmptyState.EmptyStateDefault />)
