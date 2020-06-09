@@ -1674,6 +1674,14 @@
           "subtitle": "Compartilhe o link abaixo e boas vendas.",
           "new_link": "Criar novo link de pagamento"
         }
+      },
+      "details": {
+        "link_statement": "Extrato do link",
+        "paid_amount": "Valor pago",
+        "refunds": "Estornos",
+        "chargebacks": "Chargebacks",
+        "fees": "Taxas Pagar.me",
+        "net_amount": "Você recebe"
       }
     },
     "empty_state": {
