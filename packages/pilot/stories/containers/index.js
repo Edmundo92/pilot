@@ -464,6 +464,10 @@ storiesOf('Containers|Payment Links/PaymentLinkAdd', module)
   .add('FirstStep', () => <PaymentLinks.PaymentLinkAdd.PaymentLinkFirstStep />)
   .add('Result', () => <PaymentLinks.PaymentLinkAdd.PaymentLinkResult />)
 
+storiesOf('Containers|Payment Links/Details/LinkStatement', module)
+  .add('Default', () => <PaymentLinks.Details.LinkStatement.LinkStatementDefault />)
+  .add('OptionalFields', () => <PaymentLinks.Details.LinkStatement.LinkStatementOptionalFields />)
+
 storiesOf('Containers|Empty State', module)
   .add('Default', () => <EmptyState.EmptyStateDefault />)
   .add('MDRzao', () => <EmptyState.EmptyStateMDRzao />)
