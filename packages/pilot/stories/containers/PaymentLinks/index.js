@@ -5,8 +5,8 @@ import PaymentLinksList from './PaymentLinksList'
 import PaymentLinkAdd from './PaymentLinkAdd'
 
 export default {
-  Filter,
   Details,
+  Filter,
   NewLinksCard,
   PaymentLinkAdd,
   PaymentLinksList,

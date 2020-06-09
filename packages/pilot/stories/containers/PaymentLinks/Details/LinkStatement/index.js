@@ -17,6 +17,15 @@ const LinkStatementDefaultExample = () => (
   </Section>
 )
 
+const LinkStatementEmptyStateExample = () => (
+  <Section>
+    <LinkStatement
+      enableEmptyState
+      t={t}
+    />
+  </Section>
+)
+
 const LinkStatementOptionalFieldsExample = () => (
   <Section>
     <LinkStatement
@@ -32,5 +41,6 @@ const LinkStatementOptionalFieldsExample = () => (
 
 export default {
   LinkStatementDefault: LinkStatementDefaultExample,
+  LinkStatementEmptyState: LinkStatementEmptyStateExample,
   LinkStatementOptionalFields: LinkStatementOptionalFieldsExample,
 }

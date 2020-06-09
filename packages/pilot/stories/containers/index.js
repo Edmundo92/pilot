@@ -466,6 +466,7 @@ storiesOf('Containers|Payment Links/PaymentLinkAdd', module)
 
 storiesOf('Containers|Payment Links/Details/LinkStatement', module)
   .add('Default', () => <PaymentLinks.Details.LinkStatement.LinkStatementDefault />)
+  .add('EmptyState', () => <PaymentLinks.Details.LinkStatement.LinkStatementEmptyState />)
   .add('OptionalFields', () => <PaymentLinks.Details.LinkStatement.LinkStatementOptionalFields />)
 
 storiesOf('Containers|Empty State', module)
