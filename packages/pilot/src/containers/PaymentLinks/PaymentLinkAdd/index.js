@@ -9,6 +9,7 @@ import IconClose from 'emblematic-icons/svg/ClearClose32.svg'
 import FirstStep from './FirstStep/FirstStep'
 import SecondStep from './SecondStep'
 import SuccessStep from './SuccessStep'
+import ErrorStep from './ErrorStep'
 
 const buildRenderTitle = onClose => title => (
   <ModalTitle
@@ -135,6 +136,15 @@ const PaymentLinkAdd = ({
           <SuccessStep
             onCreateNewLink={onCreateNewLink}
             paymentLink={paymentLink}
+            t={t}
+            renderTitle={renderTitle}
+          />
+        )
+      }
+      {
+        step === 'error_step' && (
+          <ErrorStep
+            onCreateNewLink={onCreateNewLink}
             t={t}
             renderTitle={renderTitle}
           />

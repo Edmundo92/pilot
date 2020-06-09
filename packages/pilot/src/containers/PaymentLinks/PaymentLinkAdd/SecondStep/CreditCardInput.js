@@ -77,7 +77,7 @@ const renderCreditCardInput = (formData, t) => (
         placeholder={t('pages.payment_links.add_link.second_step.transfer_fees_label')}
         options={buildInterestFeesOptions(formData.max_installments, t)}
       />
-      {formData.transfer_fees > 0 && formData.credit_card && (
+      {formData.free_installments > 0 && formData.credit_card && (
         <InterestFees
           name="interest_rate"
           t={t}
